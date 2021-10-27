@@ -1,5 +1,7 @@
 import * as React from "react"
 import '../styles/main.scss';
+import FloatingImage from "../components/floating-image";
+
 
 // data
 
@@ -14,6 +16,8 @@ const IndexPage = () => {
           <h1>
             Boswell & Associates
           </h1>
+
+          <FloatingImage image="This works"></FloatingImage>
 
         </div>
 
