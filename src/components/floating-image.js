@@ -1,24 +1,26 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { StaticImage } from "gatsby-plugin-image"
+import { StaticImage } from "gatsby-plugin-image";
 
 export default class FloatingImage extends PureComponent {
   static propTypes = {
-    image: PropTypes.string
+    image: PropTypes.string,
   };
 
   // http://jsfiddle.net/j2PAb/ <-- rewrite this in native js
 
-
   makeNewPosition(container) {
-
     let h = container.offsetWidth;
     let w = container.offsetHeight;
 
     let nh = Math.trunc(Math.floor(Math.random() * h));
     let nw = Math.trunc(Math.floor(Math.random() * w));
-    console.log([nh, nw])
+    console.log([nh, nw]);
     return [nh, nw];
+  }
+
+  logger() {
+    console.log('logged')
   }
 
   animateDiv(target) {
@@ -26,16 +28,24 @@ export default class FloatingImage extends PureComponent {
     let oldq = target.getBoundingClientRect();
     // let speed = this.calcSpeed([oldq.top, oldq.left], newq);
 
-    target.animate([
-    { top: Math.trunc(oldq.top)+'px', left: Math.trunc(oldq.left)+'px', opacity: 0 },
-    { top: newq[0]+'px', left: newq[1]+'px', opacity: 1 }
-  ], {
-    // timing options
-    duration: 1000,
-    iterations: 3
-})
+    target.animate(
+      [
+        {
+          top: Math.trunc(oldq.top) + "px",
+          left: Math.trunc(oldq.left) + "px",
+          opacity: 0,
+        },
+        { top: newq[0] + "px", left: newq[1] + "px", opacity: 1 },
+      ],
+      {
+        // timing options
+        duration: 5000,
+        iterations: 3,
+      },
 
+    );
 
+    // this.setState({ render: false});
   }
 
   // calcSpeed(prev, next) {
@@ -54,20 +64,16 @@ export default class FloatingImage extends PureComponent {
   // }
 
   render() {
-
     return (
-      <div className="floating-image" >
+      <div className="floating-image">
         <StaticImage src="../images/1.png" alt="" />
       </div>
-    )
+    );
   }
 
   componentDidMount() {
-    let target = document.querySelector('.floating-image');
-    console.log(target)
-    this.animateDiv(target);
-
-
+    let target = document.querySelector(".floating-image");
+    console.log(this);
+    this.animateDiv(target)
   }
-
 }
