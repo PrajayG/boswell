@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { StaticImage } from "gatsby-plugin-image";
+import { GatsbyImage } from "gatsby-plugin-image";
 
 export default class FloatingImage extends PureComponent {
   static propTypes = {
@@ -20,53 +20,52 @@ export default class FloatingImage extends PureComponent {
   }
 
   logger() {
-    console.log('logged')
+    console.log("logged");
   }
 
+  counter = 4;
+
   animateDiv(target) {
+    console.log(target);
     let newq = this.makeNewPosition(target.parentElement);
     let oldq = target.getBoundingClientRect();
     // let speed = this.calcSpeed([oldq.top, oldq.left], newq);
 
-    target.animate(
+    let animation = target.animate(
       [
         {
           top: Math.trunc(oldq.top) + "px",
           left: Math.trunc(oldq.left) + "px",
           opacity: 0,
+          transform: "scale(0.1)",
         },
-        { top: newq[0] + "px", left: newq[1] + "px", opacity: 1 },
+        {
+          top: newq[0] + "px",
+          left: newq[1] + "px",
+          opacity: 1,
+          transform: "scale(1)",
+        },
       ],
       {
         // timing options
         duration: 5000,
-        iterations: 3,
-      },
-
+        iterations: 1,
+      }
     );
 
-    // this.setState({ render: false});
+    animation.onfinish = () => {
+      this.counter++;
+      this.animateDiv(target);
+    };
   }
 
-  // calcSpeed(prev, next) {
-
-  //   let x = Math.abs(prev[1] - next[1]);
-  //   let y = Math.abs(prev[0] - next[0]);
-
-  //   let greatest = x > y ? x : y;
-
-  //   let speedModifier = 1000;
-
-  //   let speed = Math.ceil(greatest / speedModifier);
-
-  //   return speed;
-
-  // }
-
   render() {
+
+    const rndInt = Math.floor(Math.random() * 4) + 1
+
     return (
       <div className="floating-image">
-        <StaticImage src="../images/1.png" alt="" />
+        <GatsbyImage image={`../images/${rndInt}.png`} src={`../images/${rndInt}.png`} alt="" />
       </div>
     );
   }
@@ -74,6 +73,6 @@ export default class FloatingImage extends PureComponent {
   componentDidMount() {
     let target = document.querySelector(".floating-image");
     console.log(this);
-    this.animateDiv(target)
+    this.animateDiv(target);
   }
 }
